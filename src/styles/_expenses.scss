@@ -1,0 +1,36 @@
+.expense:nth-child(odd) {
+  background: $black-10;
+}
+
+.expense-modal {
+  background: $white-90;
+  width: 100vw;
+  height: 100vh;
+
+  input {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid $black-90;
+    outline: none;
+  }
+
+  .labels {
+    color: $black-60;
+  }
+}
+
+.delete-button {
+  width: 8em;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}

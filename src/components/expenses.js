@@ -64,21 +64,21 @@ class Expenses extends Component {
   toggleAddModal() {
     const closing = !!this.state.addModalShowing;
 
-    this.setState({
+    this.setState(prevState => ({
       addModalShowing: !closing,
-      addExpenseName: closing ? '' : this.state.addExpenseName,
-      addExpenseAmount: closing ? '' : this.state.addExpenseAmount
-    });
+      addExpenseName: closing ? '' : prevState.addExpenseName,
+      addExpenseAmount: closing ? '' : prevState.addExpenseAmount
+    }));
   }
 
   // Show / hide 'delete expense' modal.
   toggleDeleteModal(e) {
     const id = e ? e.currentTarget.dataset.id : '';
 
-    this.setState({
-      deleteModalShowing: !this.state.deleteModalShowing,
+    this.setState(prevState => ({
+      deleteModalShowing: !prevState.deleteModalShowing,
       deleteId: id
-    });
+    }));
   }
 
   // Show / hide 'edit expense' modal.
@@ -86,12 +86,12 @@ class Expenses extends Component {
     const id = e ? e.currentTarget.dataset.id : '';
     const expense = this.state.expenses.find(exp => exp._id === id) || {};
 
-    this.setState({
-      editModalShowing: !this.state.editModalShowing,
+    this.setState(prevState => ({
+      editModalShowing: !prevState.editModalShowing,
       editId: id,
       editExpenseName: expense.name || '',
       editExpenseAmount: expense.amount || ''
-    });
+    }));
   }
 
   // Esc & enter key event listener function.
@@ -302,9 +302,9 @@ class Expenses extends Component {
 
     const dir = this.state.sorts[num]; // 'asc' or 'desc'
 
-    this.setState({
+    this.setState(prevState => ({
       ['sort' + typeCap]: num,
-      expenses: this.state.expenses.sort((a, b) => {
+      expenses: prevState.expenses.sort((a, b) => {
         if (type === 'name') {
           if (a[type] > b[type]) return dir === 'asc' ? 1 : -1;
           if (a[type] < b[type]) return dir === 'asc' ? -1 : 1;
@@ -314,7 +314,7 @@ class Expenses extends Component {
         }
         return 0;
       }),
-    });
+    }));
   }
 
   render() {

@@ -92,7 +92,7 @@ const webpackConfig = {
                   targets: {
                     browsers: 'last 2 versions'
                   },
-                  modules: false // Needed for tree shaking to work.
+                  modules: false // Needed for tree shaking to work (see above).
                 }
               ],
               'react' // Calls `babel-preset-react` - makes JSX possible.

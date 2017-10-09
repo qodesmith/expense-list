@@ -166,7 +166,7 @@ class Expenses extends Component {
   renderAddModal() {
     return (
       <div
-        className='expense-modal absolute top-0 left-0 pa4'
+        className='expense-modal fixed top-0 left-0 pa4'
         onKeyUp={this.modalEscKey}>
         <Close
           size='2em'
@@ -208,7 +208,7 @@ class Expenses extends Component {
     const { name, amount } = expense;
 
     return (
-      <div className={`expense-modal absolute top-0 left-0 pa4 ${flexClasses}`}>
+      <div className={`expense-modal fixed top-0 left-0 pa4 ${flexClasses}`}>
         <h2>Are you sure you want to delete this expense?</h2>
         <h4 className='mt0'>{name} &mdash; ${amount}</h4>
         <div className='flex'>
@@ -225,7 +225,7 @@ class Expenses extends Component {
 
     return (
       <div
-        className='expense-modal absolute top-0 left-0 pa4'
+        className='expense-modal fixed top-0 left-0 pa4'
         onKeyUp={this.modalEscKey}>
         <Close
           size='2em'

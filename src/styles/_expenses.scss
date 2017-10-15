@@ -19,6 +19,12 @@
   }
 }
 
+.expense {
+  &:hover {
+    background: lighten(gold, 40%);
+  }
+}
+
 .delete-button {
   width: 8em;
 }

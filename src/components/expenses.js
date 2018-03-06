@@ -34,13 +34,13 @@ class Expenses extends Component {
   // Add 'esc' & 'enter' key listeners for modals.
   componentDidMount() {
     // Avoid ajax calls in `componentWillMount` - https://goo.gl/TpkCvx
-    Promise.all([get('/api/expenses'), get('/api/budget')])
+    Promise.all([get('/api/expenses'), get('/api/income')])
       .then(data => {
-        const [expenses, budget] = data
-        this.setState(({ income }) => ({
+        const [expenses, income] = data
+        this.setState(prevState => ({
           expenses,
           expensesFetched: true,
-          income: budget ? budget.amount : income
+          income: income ? income.amount : prevState.income
         }));
       })
       .catch(err => {
@@ -340,6 +340,7 @@ class Expenses extends Component {
     this.setState({ income: e.target.value });
   }
 
+  // Save income to the db.
   submitIncome(e) {
     if (e.key !== 'Enter' && e.key !== 'Escape') return;
 
@@ -347,8 +348,9 @@ class Expenses extends Component {
     this.input.blur();
 
     if (e.key === 'Escape') return this.input.value = this.state.income;
-    if (income !== '') income = income.join('');
-    put('/api/budget', { amount: income });
+    if (income !== '') income = +income.join('');
+    put('/api/income', { amount: income })
+      .then(() => this.setState({ income }));
   }
 
   render() {

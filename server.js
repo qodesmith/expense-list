@@ -54,8 +54,8 @@ app.post('/api/expense', require('./api/expense').post);
 app.put('/api/expense/:id', require('./api/expense').put);
 app.delete('/api/expense/:id', require('./api/expense').del);
 
-app.get('/api/budget', require('./api/budget').get);
-app.put('/api/budget', require('./api/budget').put);
+app.get('/api/income', require('./api/income').get);
+app.put('/api/income', require('./api/income').put);
 
 /*
   Catch-all endpoint which delivers `index.html` and let's

@@ -1,12 +1,11 @@
-const ObjectID = require('mongodb').ObjectID; // https://goo.gl/gLafzb
 const mongo = require('./utilities/mongo');
 const { noConnect } = require('./utilities/handleErrors');
 
 /*
-  Budget
+  Income
   ------
   {
-    amount: '129.45'
+    amount: 129.45
   }
 */
 
@@ -14,10 +13,10 @@ async function get(req, res) {
   const [dbErr, db] = await mongo();
   if (dbErr) return noConnect(res, dbErr);
 
-  const budget = await db.collection('budget').findOne({});
+  const income = await db.collection('income').findOne({});
 
   db.close();
-  res.json(budget);
+  res.json(income);
 }
 
 async function put(req, res) {
@@ -25,7 +24,7 @@ async function put(req, res) {
   if (dbErr) return noConnect(res, dbErr);
 
   const update = { $set: { amount: +req.body.amount }};
-  const updated = await db.collection('budget').updateOne({}, update);
+  const updated = await db.collection('income').updateOne({}, update, { upsert: true });
   db.close();
 
   // https://goo.gl/Mwb11F

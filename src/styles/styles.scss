@@ -28,3 +28,12 @@
 */
 @import 'global';
 @import 'expenses';
+
+#income {
+  outline: none;
+  border: 0;
+
+  &:focus {
+    border-bottom: 1px solid black;
+  }
+}

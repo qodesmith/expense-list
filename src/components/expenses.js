@@ -14,6 +14,7 @@ class Expenses extends Component {
       sortName: 0,
       sortAmount: 0,
       sorts: ['desc', 'asc'],
+      income: 0,
       ...this.cleanState()
     };
 
@@ -25,18 +26,28 @@ class Expenses extends Component {
     this.submitExpense = this.submitExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.sort = this.sort.bind(this);
+    this.changeIncome = this.changeIncome.bind(this);
+    this.submitIncome = this.submitIncome.bind(this);
   }
 
   // Fetch all the expenses into state.
   // Add 'esc' & 'enter' key listeners for modals.
   componentDidMount() {
     // Avoid ajax calls in `componentWillMount` - https://goo.gl/TpkCvx
-    get('/api/expenses')
-      .then(expenses => this.setState({ expenses, expensesFetched: true }))
+    Promise.all([get('/api/expenses'), get('/api/budget')])
+      .then(data => {
+        const [expenses, budget] = data
+        this.setState(({ income }) => ({
+          expenses,
+          expensesFetched: true,
+          income: budget ? budget.amount : income
+        }));
+      })
       .catch(err => {
         this.setState({ expensesFetched: true });
-        console.log('FETCH EXPENSES ERROR:', err);
+        console.log('FETCH DATA ERROR:', err);
       });
+
     window.addEventListener('keyup', this.keyup);
   }
 
@@ -288,8 +299,16 @@ class Expenses extends Component {
 
   // Renders the total at the bottom of the table.
   renderTotal() {
-    const total = this.state.expenses.reduce((acc, exp) => (acc + +exp.amount), 0);
-    return  <div className='mt3'>Total: ${total.toFixed(2)}</div>;
+    const { expenses, income } = this.state;
+    console.log(income)
+    const total = expenses.reduce((acc, exp) => (acc + +exp.amount), 0);
+    const remaining = (income - total).toFixed(2)
+    return  (
+      <div className='mt3'>
+        <div>Total Expenses: ${total.toFixed(2)}</div>
+        <div>Budget Remaining: ${remaining}</div>
+      </div>
+    );
   }
 
   // Sort's by name or amount.
@@ -317,18 +336,43 @@ class Expenses extends Component {
     }));
   }
 
+  changeIncome(e) {
+    this.setState({ income: e.target.value });
+  }
+
+  submitIncome(e) {
+    if (e.key !== 'Enter' && e.key !== 'Escape') return;
+
+    let income = this.state.income.replace(/ /g, '').match(/[.0-9]/g) || '';
+    this.input.blur();
+
+    if (e.key === 'Escape') return this.input.value = this.state.income;
+    if (income !== '') income = income.join('');
+    put('/api/budget', { amount: income });
+  }
+
   render() {
     const {
       expenses,
       expensesFetched,
       addModalShowing,
       deleteModalShowing,
-      editModalShowing
+      editModalShowing,
+      income
     } = this.state;
 
     return (
       <div className='ph4 pb4'>
         <h1>Monthly Expenses</h1>
+        <h3>
+          Income: $
+          <input
+            id='income'
+            value={income}
+            ref={el => this.input = el}
+            onChange={this.changeIncome}
+            onKeyUp={this.submitIncome} />
+        </h3>
         <div className='buttons'>
           <button className='pointer' onClick={this.toggleAddModal}>Add Expense</button>
           <button data-type='name' className='pointer ml2' onClick={this.sort}>Sort by name</button>

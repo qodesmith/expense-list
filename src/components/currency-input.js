@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 // `CurrencyInput` is used. Should be used in a parent component's
 // `submit` function to ensure proper currency formatting.
 export const sanitizeAmount = amount => {
+  if (typeof amount === 'number') return amount;
   const arr = amount.split('.');
 
   if (arr.length > 1) {

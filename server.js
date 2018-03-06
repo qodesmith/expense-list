@@ -54,6 +54,9 @@ app.post('/api/expense', require('./api/expense').post);
 app.put('/api/expense/:id', require('./api/expense').put);
 app.delete('/api/expense/:id', require('./api/expense').del);
 
+app.get('/api/budget', require('./api/budget').get);
+app.put('/api/budget', require('./api/budget').put);
+
 /*
   Catch-all endpoint which delivers `index.html` and let's
   the front-end handle all the routing including 404's.

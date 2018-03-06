@@ -300,7 +300,6 @@ class Expenses extends Component {
   // Renders the total at the bottom of the table.
   renderTotal() {
     const { expenses, income } = this.state;
-    console.log(income)
     const total = expenses.reduce((acc, exp) => (acc + +exp.amount), 0);
     const remaining = (income - total).toFixed(2)
     return  (

@@ -40,3 +40,15 @@
 .flex-shrink-0 {
   flex-shrink: 0;
 }
+
+#income {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: gray;
+
+  &:focus {
+    border-bottom: 1px solid black;
+    color: black;
+  }
+}

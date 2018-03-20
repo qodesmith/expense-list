@@ -365,15 +365,17 @@ class Expenses extends Component {
     return (
       <div className='ph4 pb4'>
         <h1>Monthly Expenses</h1>
-        <h3>
-          Income: $
+        <div className='flex items-baseline mb3'>
+          <h3 className='ma0'>Income:</h3>
+          <span className='ml2 f4'>$</span>
           <input
             id='income'
+            className='f4'
             value={income}
             ref={el => this.input = el}
             onChange={this.changeIncome}
             onKeyUp={this.submitIncome} />
-        </h3>
+        </div>
         <div className='buttons'>
           <button className='pointer' onClick={this.toggleAddModal}>Add Expense</button>
           <button data-type='name' className='pointer ml2' onClick={this.sort}>Sort by name</button>

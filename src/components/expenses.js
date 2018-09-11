@@ -28,6 +28,7 @@ class Expenses extends Component {
     this.sort = this.sort.bind(this);
     this.changeIncome = this.changeIncome.bind(this);
     this.submitIncome = this.submitIncome.bind(this);
+    this.toFixed = this.toFixed.bind(this);
   }
 
   // Fetch all the expenses into state.
@@ -121,7 +122,7 @@ class Expenses extends Component {
     const { id, value } = e.target;
     const name = dashToCamel(id);
 
-    name && this.setState({ [name]: value });
+    name && this.setState({ [name]: this.toFixed(value) });
   }
 
   // Save expense to the db.
@@ -285,7 +286,7 @@ class Expenses extends Component {
       return (
         <div className={className} key={i}>
           <div className='flex-grow-1 pa3'>{name}</div>
-          <div className='w-10-ns pa3 tr bl'>${amount}</div>
+          <div className='w-10-ns pa3 tr bl'>${this.toFixed(amount)}</div>
           <div className='flex-grow-0 pa3 bl flex items-center justify-center'>
             <Edit data-id={id} onClick={this.toggleEditModal} />
           </div>
@@ -297,15 +298,19 @@ class Expenses extends Component {
     });
   }
 
+  toFixed(val) {
+    return +val % 1 ? (+val).toFixed(2) : val
+  }
+
   // Renders the total at the bottom of the table.
   renderTotal() {
     const { expenses, income } = this.state;
     const total = (expenses || []).reduce((acc, exp) => (acc + +exp.amount), 0);
-    const remaining = (income - total).toFixed(2)
+    const remaining = income - total
     return  (
       <div className='mt3'>
-        <div>Total Expenses: ${total.toFixed(2)}</div>
-        <div>Budget Remaining: ${remaining}</div>
+        <div>Total Expenses: ${this.toFixed(total)}</div>
+        <div>Budget Remaining: ${this.toFixed(remaining)}</div>
       </div>
     );
   }
@@ -376,7 +381,7 @@ class Expenses extends Component {
           <input
             id='income'
             className='f4'
-            value={income}
+            value={this.toFixed(+income)}
             ref={el => this.input = el}
             onChange={this.changeIncome}
             onKeyUp={this.submitIncome} />

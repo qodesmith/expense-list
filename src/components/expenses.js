@@ -300,7 +300,7 @@ class Expenses extends Component {
   // Renders the total at the bottom of the table.
   renderTotal() {
     const { expenses, income } = this.state;
-    const total = expenses.reduce((acc, exp) => (acc + +exp.amount), 0);
+    const total = (expenses || []).reduce((acc, exp) => (acc + +exp.amount), 0);
     const remaining = (income - total).toFixed(2)
     return  (
       <div className='mt3'>
@@ -320,17 +320,22 @@ class Expenses extends Component {
 
     const dir = this.state.sorts[num]; // 'asc' or 'desc'
 
-    this.setState(prevState => ({
+    function sortByName(a, b) {
+      if (a.name > b.name) return dir === 'asc' ? 1 : -1;
+      if (a.name < b.name) return dir === 'asc' ? -1 : 1;
+      return 0
+    }
+
+    this.setState(({ expenses }) => ({
       ['sort' + typeCap]: num,
-      expenses: prevState.expenses.sort((a, b) => {
+      expenses: expenses.sort((a, b) => {
         if (type === 'name') {
-          if (a[type] > b[type]) return dir === 'asc' ? 1 : -1;
-          if (a[type] < b[type]) return dir === 'asc' ? -1 : 1;
+          return sortByName(a, b)
         } else if (type === 'amount') {
-          if (+a[type] > +b[type]) return dir === 'asc' ? 1 : -1;
-          if (+a[type] < +b[type]) return dir === 'asc' ? -1 : 1;
+          if (+a.amount > +b.amount) return dir === 'asc' ? 1 : -1;
+          if (+a.amount < +b.amount) return dir === 'asc' ? -1 : 1;
+          return sortByName(a, b)
         }
-        return 0;
       }),
     }));
   }

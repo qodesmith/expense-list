@@ -1,5 +1,5 @@
 require('dotenv').load(); // https://goo.gl/Cj8nKu
-const { PORT, NODE_ENV } = process.env
+const { API_PORT, DEV_SERVER_PORT, NODE_ENV } = process.env
 const isProd = NODE_ENV === 'production';
 const path = require('path');
 const glob = require('glob-all');
@@ -195,6 +195,8 @@ const webpackConfig = {
     */
     historyApiFallback: true,
 
+    port: DEV_SERVER_PORT,
+
     /*
       https://goo.gl/a6WW1p
       Redirect non-static asset calls
@@ -202,7 +204,7 @@ const webpackConfig = {
       404's will be served `index.html` by `historyApiFallback` above.
     */
     proxy: {
-      '/api': `http://localhost:${PORT}`
+      '/api': `http://localhost:${API_PORT}`
     }
   },
 

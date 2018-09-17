@@ -15,7 +15,7 @@ const session = require('express-session'); // Save data across requests - https
 const app = express();
 
 // Environment variables.
-const { mongoURI, mongoSession, secret, PORT, NODE_ENV } = process.env;
+const { mongoURI, mongoSession, secret, API_PORT, NODE_ENV } = process.env;
 
 // MongoDB
 const { sessionStoreErr } = require('./api/utilities/handleErrors');
@@ -64,4 +64,4 @@ app.put('/api/income', require('./api/income').put);
 app.get('*', require('./api/home'));
 
 // And so it begins...
-app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
+app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}...`));

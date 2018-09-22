@@ -12,7 +12,7 @@ class Expenses extends Component {
       expensesFetched: false,
       expenses: [],
       sortName: 0,
-      sortAmount: 0,
+      sortAmount: 1,
       sorts: ['desc', 'asc'],
       income: 0,
       ...this.cleanState()

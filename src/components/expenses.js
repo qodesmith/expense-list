@@ -363,6 +363,7 @@ class Expenses extends Component {
   }
 
   render() {
+    const editingIncome = this.input === document.activeElement
     const {
       expenses,
       expensesFetched,
@@ -381,8 +382,9 @@ class Expenses extends Component {
           <input
             id='income'
             className='f4'
-            value={this.toFixed(+income)}
+            value={editingIncome ? income : this.toFixed(+income)}
             ref={el => this.input = el}
+            onBlur={() => this.setState({ income: this.toFixed(+income) })}
             onChange={this.changeIncome}
             onKeyUp={this.submitIncome} />
         </div>
